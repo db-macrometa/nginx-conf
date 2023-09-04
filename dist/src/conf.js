@@ -298,6 +298,22 @@ class NginxConfFile extends events.EventEmitter {
             callback && callback(null, new NginxConfFile(tree, opts).live(file));
         });
     }
+    static createSync(file, options) {
+        return new Promise((resolve, reject) => {
+            let opts = options || {};
+            parser.parseFile(file, 'utf8', (err, tree) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                if (!tree) {
+                    reject(new Error('tree could not be generated'));
+                    return;
+                }
+                resolve(new NginxConfFile(tree, opts).live(file));
+            });
+        });
+    }
     static createFromSource(source, options, callback) {
         let opts;
         if (typeof (options) === 'function') {

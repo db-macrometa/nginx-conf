@@ -43,6 +43,7 @@ export declare class NginxConfFile extends events.EventEmitter {
     flush(callback?: (errors?: Error[] | null) => void): void;
     toString(): string;
     static create(file: string, options?: NginxConfOptions | ((err: Error | null, conf?: NginxConfFile) => void) | null, callback?: (err: Error | null, conf?: NginxConfFile) => void): void;
+    static createSync(file: string, options?: NginxConfOptions): Promise<unknown>;
     static createFromSource(source: string, options?: NginxConfOptions | ((err: Error | null, conf?: NginxConfFile) => void) | null, callback?: (err: Error | null, conf?: NginxConfFile) => void): void;
 }
 export {};
