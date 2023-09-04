@@ -370,6 +370,24 @@ export class NginxConfFile extends events.EventEmitter {
 		});
 	}
 
+	public static createSync(file: string, options?: NginxConfOptions) {
+		return new Promise((resolve, reject) => {
+			let opts: NginxConfOptions = options || {};
+	
+			parser.parseFile(file, 'utf8', (err, tree) => {
+				if (err) {
+					reject(err);
+					return;
+				}
+				if (!tree) {
+					reject(new Error('tree could not be generated'));
+					return;
+				}
+				resolve(new NginxConfFile(tree, opts).live(file));
+			});
+		});
+	}
+
 	public static createFromSource(
 		source: string,
 		options?: NginxConfOptions | ((err: Error | null, conf?: NginxConfFile) => void) | null,
