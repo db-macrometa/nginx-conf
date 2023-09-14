@@ -317,6 +317,25 @@ export class NginxConfFile extends events.EventEmitter {
 		}
 	}
 
+	public writeSync(): [Error[] | null, boolean] {
+		if (!this.files.length) {
+			return [null, false];
+		}
+	
+		const contents = this.toString();
+		const errors: Error[] = [];
+	
+		for (const file of this.files) {
+			try {
+				fs.writeFileSync(file, contents, 'utf8');
+			} catch (err) {
+				errors.push(err as Error);
+			}
+		}
+	
+		return [errors.length ? errors : null, true];
+	}
+
 	public flush(callback?: (errors?: Error[] | null) => void): void {
 		if (this.writeTimeout) {
 			clearTimeout(this.writeTimeout);
