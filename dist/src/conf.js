@@ -256,6 +256,26 @@ class NginxConfFile extends events.EventEmitter {
             });
         }
     }
+    writeSync() {
+        if (!this.files.length) {
+            return false;
+        }
+        const contents = this.toString();
+        const errors = [];
+        for (const file of this.files) {
+            try {
+                fs.writeFileSync(file, contents, 'utf8');
+            }
+            catch (err) {
+                errors.push(err);
+            }
+        }
+        if (errors.length) {
+            console.error('Errors encountered during write:', errors);
+            return false;
+        }
+        return true;
+    }
     flush(callback) {
         if (this.writeTimeout) {
             clearTimeout(this.writeTimeout);

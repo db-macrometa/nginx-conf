@@ -40,6 +40,7 @@ export declare class NginxConfFile extends events.EventEmitter {
      * To handle potentially concurrent writes, use flush() instead.
      */
     write(callback?: (errors: Error[] | null, wrote: boolean) => void): void;
+    writeSync(): boolean;
     flush(callback?: (errors?: Error[] | null) => void): void;
     toString(): string;
     static create(file: string, options?: NginxConfOptions | ((err: Error | null, conf?: NginxConfFile) => void) | null, callback?: (err: Error | null, conf?: NginxConfFile) => void): void;

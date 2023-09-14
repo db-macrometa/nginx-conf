@@ -317,9 +317,9 @@ export class NginxConfFile extends events.EventEmitter {
 		}
 	}
 
-	public writeSync(): [Error[] | null, boolean] {
+	public writeSync(): boolean {
 		if (!this.files.length) {
-			return [null, false];
+			return false;
 		}
 	
 		const contents = this.toString();
@@ -333,7 +333,12 @@ export class NginxConfFile extends events.EventEmitter {
 			}
 		}
 	
-		return [errors.length ? errors : null, true];
+		if (errors.length) {
+			console.error('Errors encountered during write:', errors);
+			return false;
+		}
+		
+		return true;
 	}
 
 	public flush(callback?: (errors?: Error[] | null) => void): void {
